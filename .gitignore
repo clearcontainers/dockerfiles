@@ -1,0 +1,6 @@
+# Ignore rpmbuild generated folders
+2.1/build/rpmbuild/BUILD  
+2.1/build/rpmbuild/BUILDROOT 
+2.1/build/rpmbuild/RPMS 
+2.1/build/rpmbuild/SPECS 
+2.1/build/rpmbuild/SRPMS
