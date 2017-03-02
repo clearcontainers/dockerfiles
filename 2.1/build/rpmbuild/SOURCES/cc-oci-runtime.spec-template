@@ -1,6 +1,6 @@
 %undefine _missing_build_ids_terminate_build
 Name:      cc-oci-runtime
-Version:   2.1.0.rc.6
+Version:   VERSION
 Release:   0
 Source0:   %{name}-%{version}.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
@@ -14,7 +14,8 @@ Requires:  clear-containers-image
 Requires:  clear-containers-selinux
 Requires:  qemu-lite
 Requires:  linux-container
-Patch1: 0001-Define-GOPATH-if-there-is-none.patch
+Patch1: race.patch
+Patch2: gopath.patch
 
 %description
 .. contents::
@@ -55,8 +56,9 @@ Group: Default
 extras components for the cc-oci-runtime package.
 
 %prep
-%setup -q -n cc-oci-runtime-2.1.0-rc.6
+%setup -q -n cc-oci-runtime-PACKAGE
 %patch1 -p1
+%patch2 -p1
 
 %build
 export LANG=C
@@ -128,4 +130,5 @@ rm -rf %{buildroot}
 
 %post
 /usr/bin/systemctl enable cc-proxy.socket
-/usr/bin/systemctl start cc-proxy.socket
+/usr/bin/systemctl daemon-reload
+/usr/bin/systemctl restart cc-proxy.socket
