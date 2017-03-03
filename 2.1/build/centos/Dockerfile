@@ -74,7 +74,6 @@ RUN cd bats && \
 
 # Install Glib & Json-Glib
 ENV PKG_CONFIG_PATH=/usr/local/lib/pkgconfig:$PKG_CONFIG_PATH
-RUN yum -y install zlib-devel
 RUN curl -L -O "https://download.gnome.org/sources/glib/2.46/glib-2.46.2.tar.xz"
 RUN tar -xvf glib-2.46.2.tar.xz
 RUN pushd glib-2.46.2 && \
@@ -93,7 +92,7 @@ RUN yum -y install gmp-devel mpfr-devel libmpc-devel gcc-c++
 RUN curl -L -O http://www.mirrorservice.org/sites/ftp.gnu.org/gnu/gcc/gcc-6.2.0/gcc-6.2.0.tar.gz
 RUN tar xvf gcc-6.2.0.tar.gz
 RUN pushd gcc-6.2.0 && \
-    ./configure --prefix=/usr --enable-languages=c --disable-multilib --prefix=/usr/local/gcc-6.2.0 && \
+    ./configure --enable-languages=c --disable-multilib --prefix=/usr/local/gcc-6.2.0 && \
     make -j5 && sudo make install && \
     popd
 ENV PATH=/usr/local/gcc-6.2.0/bin:$PATH
@@ -103,10 +102,9 @@ RUN yum -y install centos-release-scl
 RUN yum -y install devtoolset-4
 
 # Install Go
-RUN wget https://storage.googleapis.com/golang/go1.7.5.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.7.5.linux-amd64.tar.gz
+RUN wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.8.linux-amd64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin
-RUN rm go1.7.5.linux-amd64.tar.gz
 
 # Set $GOPATH and $HOME env variables
 RUN mkdir -p /root/go

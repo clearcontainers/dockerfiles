@@ -72,10 +72,9 @@ RUN dnf -y update && \
 	libattr-devel
 
 # Install Go
-RUN wget https://storage.googleapis.com/golang/go1.7.5.linux-amd64.tar.gz
-RUN tar -C /usr/local -xzf go1.7.5.linux-amd64.tar.gz
+RUN wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
+RUN tar -C /usr/local -xzf go1.8.linux-amd64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin
-RUN rm go1.7.5.linux-amd64.tar.gz
 
 # Set $GOPATH and $HOME env variables
 RUN mkdir -p /root/go

@@ -8,6 +8,7 @@ if [ -z "$1" ]; then
     echo
     exit 1
 fi
+
 # Download cc-oci-runtime.tar.gz
 curl -OkL https://github.com/01org/cc-oci-runtime/archive/$1.tar.gz
 
@@ -18,8 +19,7 @@ curl -OkL https://github.com/01org/qemu-lite/archive/da5004e3ffc6a79df82d1b9d8f8
 rpmdev-setuptree
 cd ~/rpmbuild/SOURCES
 
-# version can't have '-' character
-version=$(echo $1 | tr '-' '.')
+version=$(echo $1)
 mv ~/$1.tar.gz ~/rpmbuild/SOURCES/cc-oci-runtime-$version.tar.gz
 
 # Move qemu-lite tar

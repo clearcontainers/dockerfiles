@@ -14,8 +14,6 @@ Requires:  clear-containers-image
 Requires:  clear-containers-selinux
 Requires:  qemu-lite
 Requires:  linux-container
-Patch1: race.patch
-Patch2: gopath.patch
 
 %description
 .. contents::
@@ -57,8 +55,6 @@ extras components for the cc-oci-runtime package.
 
 %prep
 %setup -q -n cc-oci-runtime-PACKAGE
-%patch1 -p1
-%patch2 -p1
 
 %build
 export LANG=C
@@ -87,6 +83,7 @@ rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
+/usr/share/defaults/cc-oci-runtime/genfile.sh
 
 %files bin
 %defattr(-,root,root,-)
