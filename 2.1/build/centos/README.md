@@ -1,5 +1,9 @@
 # Build the CentOS builder Docker container 
-`$ sudo docker build -t centos-clear-containers .`
+As root, run:
+
+```
+# docker build -t centos-clear-containers .
+```
 
 # Generate the qemu-lite & cc-oci-runtime rpms just run this:
 As root, run:
