@@ -106,10 +106,18 @@ RUN wget https://storage.googleapis.com/golang/go1.8.linux-amd64.tar.gz
 RUN tar -C /usr/local -xzf go1.8.linux-amd64.tar.gz
 ENV PATH=$PATH:/usr/local/go/bin
 
-# Set $GOPATH and $HOME env variables
-RUN mkdir -p /root/go
-ENV GOPATH /root/go
-ENV HOME /root
-WORKDIR $HOME
+# Create a clear containers (cc) user
+ENV USER cc
+ENV HOME /home/cc
+RUN useradd -u 1000 -U -d ${HOME} -s /bin/bash ${USER}
+
+USER    ${USER}
+WORKDIR ${HOME}
+
+RUN mkdir -p /home/cc/go
+ENV GOPATH /home/cc/go
+
+RUN mkdir -p /home/cc/rpmbuild/SOURCES
+COPY SOURCES/* /home/cc/rpmbuild/SOURCES/
 
 CMD ["/bin/bash"]

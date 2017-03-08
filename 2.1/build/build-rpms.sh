@@ -36,3 +36,5 @@ cd ~/rpmbuild/SOURCES && \
 cd ~/rpmbuild/SOURCES && \
     rpmbuild -ba cc-oci-runtime.spec
 
+# Copy RPMs
+cp ~/rpmbuild/RPMS/x86_64/* ~/build/
