@@ -1,9 +1,20 @@
-# To build
-`$ sudo docker build -t fedora-clear-containers .`
+# Build the Fedora builder Docker container 
 
-# To generate the qemu-lite & cc-oci-runtime rpms just run this:
-`$ sudo docker run -ti --rm -v $PWD/../rpmbuild:/root/rpmbuild -v $PWD/../build-rpms.sh:/usr/bin/build-rpms.sh fedora-clear-containers /usr/bin/build-rpms.sh VERSION`
+```
+# docker build -t fedora-clear-containers .
+```
 
-Currently this is working with version cc-oci-runtime 2.1.1, change `VERSION` to 2.1.1
+# Generate the qemu-lite and cc-oci-runtime RPMs
 
-The rpms for cc-oci-runtime & qemu-lite will be at `$PWD/../rpmbuild/RPMS/x86_64`
+## Host build directory
+
+The RPMs will be copied into a directory of your choice, e.g. `/tmp/build`
+Make sure you have write access on that directory.
+
+```
+# export BUILD_DIR=/tmp/build
+# export VERSION=2.1.1
+# docker run -ti --rm -v $BUILD_DIR:/home/cc/build -v $PWD/../build-rpms.sh:/usr/bin/build-rpms.sh fedora-clear-containers /usr/bin/build-rpms.sh $VERSION
+```
+
+The RPMs for cc-oci-runtime and qemu-lite will be at `$BUILD_DIR`
