@@ -8,7 +8,8 @@
 
 ## Host build directory
 
-The RPMs will be copied into a directory of your choice, e.g. `/tmp/build`
+The RPMs will be copied into a directory of your choice, e.g. `/tmp/build`.
+
 Make sure you have write access on that directory.
 
 ```
