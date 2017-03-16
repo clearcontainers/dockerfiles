@@ -4,7 +4,7 @@
 # docker build -t centos-clear-containers .
 ```
 
-# Generate the qemu-lite & cc-oci-runtime rpms just run this:
+# Generate the qemu-lite & cc-oci-runtime RPMs:
 
 ## Host build directory
 
@@ -17,4 +17,4 @@ Make sure you have write access on that directory.
 # docker run -ti --rm -v $BUILD_DIR:/home/cc/build -v $PWD/../build-rpms.sh:/usr/bin/build-rpms.sh centos-clear-containers /usr/bin/build-rpms.sh $VERSION
 ```
 
-The rpms for cc-oci-runtime & qemu-lite will be at `$BUILD_DIR`
+The RPMs for cc-oci-runtime & qemu-lite will be at `$BUILD_DIR`
