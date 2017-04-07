@@ -1,6 +1,6 @@
 #!/bin/bash
 # $1 Release version
-qemu_lite_version=da5004e3ffc6a79df82d1b9d8f8533c4045f193c
+qemu_lite_version=741f430a960b5b67745670e8270db91aeb083c5f
 
 if [ -z "$1" ]; then
     echo "No cc-oci-runtime version specified"

@@ -14,7 +14,7 @@ Make sure you have write access on that directory.
 
 ```
 # export BUILD_DIR=/tmp/build
-# export VERSION=2.1.1
+# export VERSION=2.1.2
 # docker run -ti --rm -v $BUILD_DIR:/home/cc/build -v $PWD/../build-rpms.sh:/usr/bin/build-rpms.sh centos-clear-containers /usr/bin/build-rpms.sh $VERSION
 ```
 
