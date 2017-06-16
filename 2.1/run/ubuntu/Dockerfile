@@ -1,20 +1,18 @@
+# Copyright (c) 2017 Intel Corporation
 #
-#  Copyright (C) 2016 Intel Corporation
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
 #
-#  This program is free software; you can redistribute it and/or
-#  modify it under the terms of the GNU General Public License
-#  as published by the Free Software Foundation; either version 2
-#  of the License, or (at your option) any later version.
+#      http://www.apache.org/licenses/LICENSE-2.0
 #
-#  This program is distributed in the hope that it will be useful,
-#  but WITHOUT ANY WARRANTY; without even the implied warranty of
-#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#  GNU General Public License for more details.
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 #
-#  You should have received a copy of the GNU General Public License
-#  along with this program; if not, write to the Free Software
-#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
+# Ubuntu Sandbox for Clear Containers
 
 FROM ubuntu:16.04
 
@@ -23,38 +21,37 @@ RUN apt-get update
 RUN apt-get upgrade -y
 RUN apt-get install -y vim procps wget libmnl0
 
+# Install Docker
+RUN apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+RUN add-apt-repository \
+	"deb [arch=amd64] https://download.docker.com/linux/ubuntu \
+	$(lsb_release -cs) \
+	stable"
+RUN apt-get update
+RUN apt-get install -y docker-ce
+
 # Add the OBS repository
-RUN sh -c "echo 'deb http://download.opensuse.org/repositories/home:/clearlinux:/preview:/clear-containers-2.0/xUbuntu_16.04/ /' >> /etc/apt/sources.list.d/cc-oci-runtime.list"
+RUN sh -c "echo 'deb http://download.opensuse.org/repositories/home:/clearlinux:/preview:/clear-containers-2.1/xUbuntu_16.04/ /' >> /etc/apt/sources.list.d/cc-oci-runtime.list"
 
 # Install OBS key
-RUN wget http://download.opensuse.org/repositories/home:clearlinux:preview:clear-containers-2.0/xUbuntu_16.04/Release.key
+RUN wget http://download.opensuse.org/repositories/home:clearlinux:preview:clear-containers-2.1/xUbuntu_16.04/Release.key
 RUN apt-key add Release.key
 RUN rm Release.key
 
 # Install the Clear Containers assets.
-# Note that the command below installs (a version of) the runtime. This
-# version isn't used (since this docker image after all is for testing
-# development versions of the runtime). However, specifying the runtime
-# package ensures the Clear Containers assets are installed
-# automatically as dependencies of the runtime package.
 RUN apt-get update
-RUN apt-get install -y cc-oci-runtime
-
-# Install Docker 1.12.1
-# Note that currently cc-oci-runtime only works with Docker 1.12.1 as it
-# only supports OCI specification 1.0.0-rc1
-# More info can be found at https://github.com/01org/cc-oci-runtime/issues/275
-RUN apt-get update
-RUN apt-get install -y apt-transport-https ca-certificates
-RUN apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-RUN sh -c "echo 'deb https://apt.dockerproject.org/repo ubuntu-xenial main' >> /etc/apt/sources.list.d/docker.list"
-RUN apt-get update
-RUN apt-get purge lxc-docker
-RUN apt-cache policy docker-engine
-RUN apt-get install -y docker-engine=1.12.1-0~xenial
+# Returning `true` since the installation of cc-oci-runtime
+# tries to start cc-proxy socket via systemd and returns an
+# error since we do not have systemd inside the container.
+# We will start cc-proxy later.
+RUN apt-get install -y cc-oci-runtime || true
 
 # Have Docker run with Clear Containers as the default runtime
-RUN echo "#!/bin/bash\ndockerd --add-runtime cor=/usr/bin/cc-oci-runtime --default-runtime=cor --storage-driver=vfs > /dev/null 2>&1 &" > /root/start-cc.sh && chmod +x /root/start-cc.sh
+RUN echo "#!/bin/bash\ndockerd --add-runtime cor=/usr/bin/cc-oci-runtime \
+	--default-runtime=cor --storage-driver=vfs > \
+	/dev/null 2>&1 &\n/usr/libexec/cc-proxy &" > \
+	/root/start-cc.sh && chmod +x /root/start-cc.sh
 
 ENV HOME /root
 WORKDIR $HOME
