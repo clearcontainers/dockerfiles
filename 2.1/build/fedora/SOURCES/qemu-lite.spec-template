@@ -2,7 +2,7 @@
 Name: qemu-lite
 Version: 2.7.1
 Release: 0
-Source0: https://github.com/01org/qemu-lite/archive/da5004e3ffc6a79df82d1b9d8f8533c4045f193c.tar.gz
+Source0: https://github.com/01org/qemu-lite/archive/QEMU_LITE_VERSION.tar.gz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}
 Summary  : OpenBIOS development utilities
 Group    : Development/Tools
@@ -45,7 +45,7 @@ data components for the qemu-lite package.
 
 
 %prep
-%setup -q -n qemu-lite-da5004e3ffc6a79df82d1b9d8f8533c4045f193c
+%setup -q -n qemu-lite-QEMU_LITE_VERSION
 %patch1 -p1
 
 %build
